@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:96d2462840b98ebd99eb4ababee53db0:993e44aee0b7e9df4d59fe3fc9ae5b6b:2d8d04cb31792fe6d0b373b432bf74c8$ -->
+<TextureAtlas imagePath="gameAssets_1.png">
+    <SubTexture name="btnPlayNow" x="2" y="2" width="288" height="65"/>
+</TextureAtlas>

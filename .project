@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>JewelThief</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] HiResStats-src</name>
+			<type>2</type>
+			<location>/Library/WebServer/Documents/HiResStats/src</location>
+		</link>
+		<link>
+			<name>[source path] greensock-as3</name>
+			<type>2</type>
+			<location>/Library/WebServer/Documents/greensock/greensock-as3</location>
+		</link>
+		<link>
+			<name>[source path] starling-src</name>
+			<type>2</type>
+			<location>/Library/WebServer/Documents/starling/starling/src</location>
+		</link>
+	</linkedResources>
+</projectDescription>
