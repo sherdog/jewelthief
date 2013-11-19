@@ -9,6 +9,7 @@ package screens
 	{
 		private var startBg:Image;
 		private var playBtn:Button;
+		private var currentScreen:String = "Start";
 		
 		public function Start()
 		{
@@ -42,8 +43,14 @@ package screens
 		
 		private function onPlayBtnClick(event:Event):void
 		{
-			trace('play btn clicked');
+			this.hideScreen();
 			
+		}
+		
+		private function hideScreen():void
+		{
+			trace('hideScreen triggered');
+			//this.visible = false;
 		}
 		
 		public function initialize():void
