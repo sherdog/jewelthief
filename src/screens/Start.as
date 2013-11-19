@@ -36,6 +36,14 @@ package screens
 			
 			addChild(playBtn);
 			
+			playBtn.addEventListener(Event.TRIGGERED, onPlayBtnClick);
+			
+		}
+		
+		private function onPlayBtnClick(event:Event):void
+		{
+			trace('play btn clicked');
+			
 		}
 		
 		public function initialize():void
