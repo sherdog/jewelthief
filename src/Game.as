@@ -1,14 +1,16 @@
 package
 {
-	import screens.Start;
+	import screens.Level;
 	
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
 	public class Game extends Sprite
 	{
-		private var startScreen:Start;
-
+		private var levelScreen:Level;
+	 	private var gameBg:Image;
+		
 		public function Game()
 		{
 			super();
@@ -19,49 +21,22 @@ package
 		{
 			trace('straling added to stage');
 			//k now we are ready to launch the start screen
-			startScreen = new Start();
-			this.addChild(startScreen);
+			gameBg = new Image(Asset.getAtlas().getTexture("level_1_bg"));
+			gameBg.x = 50;
+			gameBg.y = 60;
 			
-			startScreen.initialize();
+			this.addChild(gameBg);
+			
+			levelScreen = new Level();
+			levelScreen.x = 100;
+			levelScreen.y = 100;
+			this.addChild(levelScreen);
+			levelScreen.initialize();
+			
+			
 		}
 		
-		// *****************************************************************************
-		private function createLayout():Void
-		{
-			
-			// display a background
-			playBg = attachMovie("playBg","playBg",1);
-			
-			// set up where the columns are on screen
-			var nextLeft = firstColLeft;
-			for (var i=0;i<numberOfCols;i++)
-			{
-				columnLocationX[i] = nextLeft;
-				nextLeft += colWidth;
-			}
-			
-			// set up where the rows are on screen
-			var nextTop = firstRowTop;
-			for (var i=0;i<numberOfRows;i++)
-			{
-				rowLocationY[i] = nextTop;
-				nextTop += colWidth;
-			}
-			
-			
-			// create grid array
-			grid = new Array();
-			
-			// set grid to null
-			for(var col=0;col<numberOfCols;col++)
-			{
-				grid[col]=new Array();
-				for (var row=0;row<numberOfRows;row++)
-				{
-					item = grid[col][row] = null;
-					item.bgcolor = 0xFF00;
-				}
-			}
+		
 		
 		
 	}

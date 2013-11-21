@@ -4,8 +4,9 @@ package
 	import net.hires.debug.Stats;
 	import starling.core.Starling;
 	import screens.Start;
+	import screens.Level;
 	
-	[SWF(frameRate="60", width="800", height="700", BackgroundColor="0xFFFFFF")]
+	[SWF(frameRate="60", width="800", height="700", BackgroundColor="0x2f318f")]
 
 	public class JewelThief extends Sprite
 	{

@@ -26,7 +26,7 @@ package
 		
 		private static var gameTextures:Dictionary = new Dictionary();
 		
-		public function getAtlas():TextureAtlas
+		public static function getAtlas():TextureAtlas
 		{
 			if(gameTextureAtlas == null)
 			{
@@ -37,9 +37,10 @@ package
 	
 			return gameTextureAtlas;
 		}
-		public static function getTexture(name:String):starling.textures.Texture
+		
+		public static function getTexture(name:String):Texture
 		{
-			if(gameTextures[name] == undefined)
+			if (gameTextures[name] == undefined)
 			{
 				var bitmap:Bitmap = new Asset[name]();
 				gameTextures[name] = Texture.fromBitmap(bitmap);
