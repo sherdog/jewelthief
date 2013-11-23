@@ -1,12 +1,11 @@
-package
-{
-	import flash.display.Sprite;
+﻿package  {
 	
-	public class shared extends Sprite
-	{
-		public function shared()
-		{
-			
+	import flash.display.MovieClip;
+	public class mcScoreBoard extends MovieClip {
+		
+		public function mcScoreBoard() {
+			// constructor code
 		}
 	}
+	
 }
