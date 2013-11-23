@@ -19,7 +19,7 @@ package
 		
 		private function onAddedToStage():void
 		{
-			trace('straling added to stage');
+			//trace('straling added to stage');
 			//k now we are ready to launch the start screen
 			gameBg = new Image(Asset.getAtlas().getTexture("level_1_bg"));
 			gameBg.x = 50;
@@ -31,7 +31,7 @@ package
 			levelScreen.x = 100;
 			levelScreen.y = 100;
 			this.addChild(levelScreen);
-			levelScreen.initialize();
+			//levelScreen.initialize();
 			
 			
 		}

@@ -16,19 +16,19 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] HiResStats-src</name>
-			<type>2</type>
-			<location>/Library/WebServer/Documents/HiResStats/src</location>
-		</link>
-		<link>
 			<name>[source path] greensock-as3</name>
 			<type>2</type>
-			<location>/Library/WebServer/Documents/greensock/greensock-as3</location>
+			<location>G:/Windows Archive/htdocs/jewelthief_flash/greensock-as3</location>
+		</link>
+		<link>
+			<name>[source path] hires-src</name>
+			<type>2</type>
+			<location>G:/Windows Archive/htdocs/jewelthief_flash/hires/src</location>
 		</link>
 		<link>
 			<name>[source path] starling-src</name>
 			<type>2</type>
-			<location>/Library/WebServer/Documents/starling/starling/src</location>
+			<location>G:/Windows Archive/htdocs/jewelthief_flash/starling/src</location>
 		</link>
 	</linkedResources>
 </projectDescription>

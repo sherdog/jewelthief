@@ -1,16 +1,18 @@
 package screens
 {
+	import com.greensock.*;
+	import com.greensock.easing.*;
+	
 	import objects.Item;
 	
 	import starling.animation.Tween;
 	import starling.display.Image;
 	import starling.display.MovieClip;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.text.TextField;
 	import starling.textures.Texture;
-	
-	import com.greensock.*;
-	import com.greensock.easing.*;
 	
 	public class Level extends Sprite
 	{
@@ -41,7 +43,16 @@ package screens
 		private var padding:Number = 10;
 		private var colHeight:Number = 64;
 		
+		[Embed(source="../assets/swfs/shared.swf")]
+		public static var SharedAssets:Class;
+		
+		
+		private var scoreText:TextField;
+		
 		private var scoreDisplay:MovieClip;
+		
+		[Embed(source="../assets/fonts/badabb.TTF", fontFamily="ComicText", embedAsCFF="false")]
+		public static var ComicText:Class;
 		
 		public function Level()
 		{
@@ -54,19 +65,21 @@ package screens
 		private function onAddedToStage(event:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
+			initialize();
 		}
 		
 		public function initialize():void
 		{
-			trace('initialize called');
+			//trace('initialize calfdfdled');
 			this.visible = true;
 			drawGrid();
+			newCounter();
 		}
 		
 		private function drawGrid():void
 		{
 			// set up where the columns are on screen
+			trace('drawgrid called');
 			var nextLeft:Number = firstColLeft;
 			for (var i:Number = 0; i < numberOfCols; i++)
 			{
@@ -116,64 +129,73 @@ package screens
 		// *****************************************************************************
 		private function newCounter():void
 		{
+			
+			
+			trace('added text to stage');
+			
+			/*
 			currentCol = 0;
 			counterNumber++;
 			
 			activeCounter = attachMovie("counter",counterNumber, getNextHighestDepth(), {_x:columnLocationX[currentCol], _y:activeRowTop});
 			allCounters.push(activeCounter);
 			activeCounter.setCanMove();
+			*/
 			
 		}
-		
 		// *****************************************************************************
+		/*
 		private function moveCounter(dir):void
 		{
-			if (activeCounter.canMove)
-			{
-				currentCol = currentCol + dir;
-				if (currentCol == -1) {currentCol = 0;}
-				if (currentCol == numberOfCols) {currentCol= numberOfCols-1;}
-				activeCounter._x = columnLocationX[currentCol];
-			}
-			
-			
+		if (activeCounter.canMove)
+		{
+		currentCol = currentCol + dir;
+		if (currentCol == -1) {currentCol = 0;}
+		if (currentCol == numberOfCols) {currentCol= numberOfCols-1;}
+		activeCounter._x = columnLocationX[currentCol];
 		}
 		
+		
+		}
+		*/
+		
 		// *****************************************************************************
+		/*
 		private function dropCounter():void
 		{	
-			
-			// stop it moving
-			activeCounter.setCannotMove();
-			
-			// find out where to stop
-			var testRow = numberOfRows-1;
-			while (grid[currentCol][testRow] != null && testRow > -1)
-			{
-				testRow--;
-			}
-			
-			// drop it
-			if (testRow == -1)
-			{
-				trace("Col Full!!!!");
-				activeCounter.setCanMove();
-			}
-			else
-			{
-				var stopAt = rowLocationY[testRow];
-				activeCounter.col = currentCol;
-				activeCounter.row = testRow;
-				
-				grid[currentCol][testRow] = activeCounter; // set the grid cell to full
-				
-				// actually drop the counter using a tween
-				var speed = (testRow+1)/8;
-				counterTween = TweenLite.to(activeCounter, speed, {_y:stopAt, ease:Bounce.easeOut, onComplete:droppedCounter,onCompleteScope:this});
-				
-			}
-			
+		
+		// stop it moving
+		activeCounter.setCannotMove();
+		
+		// find out where to stop
+		var testRow = numberOfRows-1;
+		while (grid[currentCol][testRow] != null && testRow > -1)
+		{
+		testRow--;
 		}
+		
+		// drop it
+		if (testRow == -1)
+		{
+		trace("Col Full!!!!");
+		activeCounter.setCanMove();
+		}
+		else
+		{
+		var stopAt = rowLocationY[testRow];
+		activeCounter.col = currentCol;
+		activeCounter.row = testRow;
+		
+		grid[currentCol][testRow] = activeCounter; // set the grid cell to full
+		
+		// actually drop the counter using a tween
+		var speed = (testRow+1)/8;
+		counterTween = TweenLite.to(activeCounter, speed, {_y:stopAt, ease:Bounce.easeOut, onComplete:droppedCounter,onCompleteScope:this});
+		
+		}
+		
+		}
+		*/
 		
 		// *****************************************************************************
 		// return an array of all matches found
@@ -265,13 +287,13 @@ package screens
 		// *****************************************************************************
 		// tell all pieces above this one to move down
 		// *****************************************************************************
-		public function affectAbove(C,R)
+		public function affectAbove(C:Number,R:Number):void
 		{
-			var removedRow = R;
-			var removedCol = C;
-			var dropDelay = 0;
+			var removedRow:Number = R;
+			var removedCol:Number = C;
+			var dropDelay:Number= 0;
 			
-			for(var moveRow=removedRow;moveRow>=0;moveRow--)
+			for(var moveRow:Number=removedRow;moveRow>=0;moveRow--)
 			{				
 				grid[removedCol][moveRow] = grid[removedCol][moveRow-1];
 				grid[removedCol][moveRow].row = moveRow;
@@ -284,50 +306,52 @@ package screens
 		}
 		
 		
+		/*
 		// *****************************************************************************
 		private function checkGridForMatches():void
 		{
-			var workingCol = activeCounter.gridCol;
-			var workingRow = activeCounter.gridRow;
-			
-			
-			var currentColour = grid[0][workingRow].colour;
-			var foundRow = new Array();
-			var col = 0;
-			do 
-			{
-				if (grid[col][workingRow].colour == currentColour && grid[col][workingRow] != null)
-				{
-					foundRow.push(col);
-				}
-				else
-				{
-					currentColour = grid[col][workingRow].colour;
-					foundRow = new Array();
-				}
-				col++;
-			}
-			while (foundRow.length < 3 && col < numberOfCols)
-			
-			
-			
-			newCounter();
+		var workingCol = activeCounter.gridCol;
+		var workingRow = activeCounter.gridRow;
+		
+		
+		var currentColour = grid[0][workingRow].colour;
+		var foundRow = new Array();
+		var col = 0;
+		do 
+		{
+		if (grid[col][workingRow].colour == currentColour && grid[col][workingRow] != null)
+		{
+		foundRow.push(col);
 		}
+		else
+		{
+		currentColour = grid[col][workingRow].colour;
+		foundRow = new Array();
+		}
+		col++;
+		}
+		while (foundRow.length < 3 && col < numberOfCols)
+		
+		
+		
+		newCounter();
+		}
+		*/
 		
 		// *****************************************************************************
 		private function clearGrid():void
 		{
 			// create all the cells in the grid
-			for (var col=0;col<numberOfCols;col++)
+			for (var col:Number=0;col<numberOfCols;col++)
 			{
 				grid[col] = new Array();
-				for (var row=0; row< numberOfRows; row++)
+				for (var row:Number=0; row< numberOfRows; row++)
 				{
 					grid[col][row] = null;
 				}
 			}
 			
-			for (var i=0;i<allCounters.length;i++)
+			for (var i:Number=0;i<allCounters.length;i++)
 			{
 				allCounters[i].removeMovieClip();
 			}
