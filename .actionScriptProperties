@@ -5,6 +5,7 @@
       <compilerSourcePathEntry kind="1" linkType="1" path="G:/Windows Archive/htdocs/jewelthief_flash/greensock-as3"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="G:/Windows Archive/htdocs/jewelthief_flash/starling/src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="G:/Windows Archive/htdocs/jewelthief_flash/hires/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="G:/Windows Archive/htdocs/jewelthief_flash/Dynamic-Texture-Atlas-Generator-master/dynamicTextureAtlasGenerator/src"/>
     </compilerSourcePath>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">

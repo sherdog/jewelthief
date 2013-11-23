@@ -6,7 +6,10 @@ package
 	import screens.Start;
 	import screens.Level;
 	
-	[SWF(frameRate="60", width="800", height="700", BackgroundColor="0x2f318f")]
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	
+	[SWF(frameRate="60", width="800", height="700", backgroundColor="#2f318f")]
 
 	public class JewelThief extends Sprite
 	{
@@ -15,6 +18,9 @@ package
 		
 		public function JewelThief()
 		{
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			
 			stats = new Stats();
 			this.addChild(stats);
 			

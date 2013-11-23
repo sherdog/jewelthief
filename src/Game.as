@@ -2,9 +2,21 @@ package
 {
 	import screens.Level;
 	
+	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.events.EnterFrameEvent;
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
+	import starling.textures.Texture;
+	import starling.utils.Color;
+	import starling.textures.TextureAtlas;
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
-	import starling.events.Event;
+	
+	import com.emibap.textureAtlas.DynamicAtlas;
+	
+	
+	
 	
 	public class Game extends Sprite
 	{
@@ -21,6 +33,8 @@ package
 		{
 			//trace('straling added to stage');
 			//k now we are ready to launch the start screen
+			addClipsFromContainer();	
+			
 			gameBg = new Image(Asset.getAtlas().getTexture("level_1_bg"));
 			gameBg.x = 50;
 			gameBg.y = 60;
@@ -36,6 +50,11 @@ package
 			
 		}
 		
+		private function addClipsFromContainer():void
+		{
+			// TODO Auto Generated method stub
+			
+		}
 		
 		
 		
