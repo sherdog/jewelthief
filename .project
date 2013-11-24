@@ -14,26 +14,4 @@
 	<natures>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>[source path] dynamicTextureAtlasGenerator-src</name>
-			<type>2</type>
-			<location>G:/Windows Archive/htdocs/jewelthief_flash/Dynamic-Texture-Atlas-Generator-master/dynamicTextureAtlasGenerator/src</location>
-		</link>
-		<link>
-			<name>[source path] greensock-as3</name>
-			<type>2</type>
-			<location>G:/Windows Archive/htdocs/jewelthief_flash/greensock-as3</location>
-		</link>
-		<link>
-			<name>[source path] hires-src</name>
-			<type>2</type>
-			<location>G:/Windows Archive/htdocs/jewelthief_flash/hires/src</location>
-		</link>
-		<link>
-			<name>[source path] starling-src</name>
-			<type>2</type>
-			<location>G:/Windows Archive/htdocs/jewelthief_flash/starling/src</location>
-		</link>
-	</linkedResources>
 </projectDescription>

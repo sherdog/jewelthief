@@ -11,30 +11,30 @@ package objects
 		private var _displayScore:Number = 0;
 		private var _totalScore:Number = 0;
 		private const SPEED:Number = 2;
+		private var _mc:TextField;
 		
 		public function Score()
 		{
 			super();
+			init();
 			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
+			
+		}
+
+		private function init():void
+		{
+			_displayScore = 0;
+			_totalScore = 0;
 		}
 		
 		public function getScore():Number
 		{
-			return this._totalScore;
+			return _totalScore;
 		}
 		
 		private function onAddedToStage(event:Event):void
 		{
 			this.removeEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
-			init();
-		}
-		
-		private function init():void
-		{
-			//setup scoreboard.
-			//we are going to import the score instanc eon stage
-			//and set the score to 0.
-			trace('score class initialized');
 		}
 		
 		public function addScore(amount:Number):void
@@ -42,24 +42,25 @@ package objects
 			updateScore(amount);
 		}
 		
-		private function updateScore(amount:Number):void
+		public function updateScore(amount:Number):void
 		{
-			this._totalScore += amount;
-			this.addEventListener(starling.events.Event.ENTER_FRAME, updateScoreDisplay);
+			_totalScore += amount;
+			addEventListener(starling.events.Event.ENTER_FRAME, updateScoreDisplay);
 		}
 		
-		private function updateScoreDisplay():void
+		public function updateScoreDisplay(event:Event):void
 		{
-			this._displayScore += SPEED;
-			if(this._displayScore > this._totalScore)
+			_displayScore += SPEED;
+			if(_displayScore > _totalScore)
 			{
-				this._displayScore = this._totalScore
+				_displayScore = _totalScore
 			}
 			
-			if(this._totalScore == this._displayScore)
+			if(_totalScore == _displayScore)
 			{
 				this.removeEventListener(starling.events.Event.ENTER_FRAME, updateScoreDisplay);
 			}
+			
 		}
 	}
 }
