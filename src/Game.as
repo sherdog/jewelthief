@@ -11,6 +11,8 @@ package
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
+	import objects.Score;
+	
 	import screens.Level;
 	
 	import starling.core.Starling;
@@ -30,6 +32,8 @@ package
 	{
 		private var levelScreen:Level;
 	 	private var gameBg:Image;
+		private var _score:Score;
+		private var txtScore:Number;
 		
 		public function Game()
 		{
@@ -64,32 +68,22 @@ package
 			try
 			{
 				var mc:scoreboardContainer = new scoreboardContainer();
-				
 				var t1:uint = getTimer();
 				var atlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
 				var embeddedFont1:Font = new BadaBoomScore();
 				
-				var txtScore:String = "1,020,304,042";
+				_score = new Score();
+				txtScore = txtScore.toString( _score.getScore);
 				
 				var total:uint = getTimer() - t1;
 				
 				trace(total, "msecs elapsed while converting...");
 				
-				var scoreText:starling.display.MovieClip = new starling.display.MovieClip(atlas.getTextures("mcScoreText"), 1);
+				var scoreText:starling.display.MovieClip = new starling.display.MovieClip(atlas.getTextures("mcScoreText"), 60);
 				scoreText.x = stage.stageWidth - (scoreText.width) - 280;
 				scoreText.y = 10;
 				addChild(scoreText);
 				Starling.juggler.add(scoreText);
-				
-				
-				
-				var scoreTextTextShadow:TextField = new TextField(300, 38, txtScore, embeddedFont1.fontName, 26, 0x000000, true);
-				scoreTextTextShadow.x = stage.stageWidth - (scoreTextTextShadow.width + 14);
-				scoreTextTextShadow.y = 10;
-				scoreTextTextShadow.autoScale = false;
-				scoreTextTextShadow.border = false;
-				
-				addChild(scoreTextTextShadow);
 				
 				var scoreTextTextForeground:TextField = new TextField(300, 36, txtScore, embeddedFont1.fontName, 26, 0xFFFFFF, true);
 				scoreTextTextForeground.x = stage.stageWidth - (scoreTextTextForeground.width + 12);
@@ -98,6 +92,10 @@ package
 				scoreTextTextForeground.border = false;
 				
 				addChild(scoreTextTextForeground);
+				
+				var scoreObject:Score = new Score();
+				scoreObject.addScore(300);
+				
 				
 				
 				
