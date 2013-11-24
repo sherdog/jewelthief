@@ -1,20 +1,28 @@
 package
 {
+	
+	import com.emibap.textureAtlas.DynamicAtlas;
+	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.MovieClip;
+	import flash.text.Font;
+	import flash.text.TextFormat;
+	import flash.utils.getTimer;
+	import flash.utils.setTimeout;
+	
 	import screens.Level;
 	
 	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.display.MovieClip;
+	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
 	import starling.textures.Texture;
-	import starling.utils.Color;
 	import starling.textures.TextureAtlas;
-	import starling.display.MovieClip;
-	import starling.display.Sprite;
-	
-	import com.emibap.textureAtlas.DynamicAtlas;
-	
+	import starling.utils.Color;
 	
 	
 	
@@ -33,6 +41,7 @@ package
 		{
 			//trace('straling added to stage');
 			//k now we are ready to launch the start screen
+			trace('made it to Game:onAddedToStage()');
 			addClipsFromContainer();	
 			
 			gameBg = new Image(Asset.getAtlas().getTexture("level_1_bg"));
@@ -47,14 +56,58 @@ package
 			this.addChild(levelScreen);
 			//levelScreen.initialize();
 			
-			
 		}
 		
 		private function addClipsFromContainer():void
 		{
 			// TODO Auto Generated method stub
-			
+			try
+			{
+				var mc:scoreboardContainer = new scoreboardContainer();
+				
+				var t1:uint = getTimer();
+				var atlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
+				var embeddedFont1:Font = new BadaBoomScore();
+				
+				var txtScore:String = "1,020,304,042";
+				
+				var total:uint = getTimer() - t1;
+				
+				trace(total, "msecs elapsed while converting...");
+				
+				var scoreText:starling.display.MovieClip = new starling.display.MovieClip(atlas.getTextures("mcScoreText"), 1);
+				scoreText.x = stage.stageWidth - (scoreText.width) - 280;
+				scoreText.y = 10;
+				addChild(scoreText);
+				Starling.juggler.add(scoreText);
+				
+				
+				
+				var scoreTextTextShadow:TextField = new TextField(300, 38, txtScore, embeddedFont1.fontName, 26, 0x000000, true);
+				scoreTextTextShadow.x = stage.stageWidth - (scoreTextTextShadow.width + 14);
+				scoreTextTextShadow.y = 10;
+				scoreTextTextShadow.autoScale = false;
+				scoreTextTextShadow.border = false;
+				
+				addChild(scoreTextTextShadow);
+				
+				var scoreTextTextForeground:TextField = new TextField(300, 36, txtScore, embeddedFont1.fontName, 26, 0xFFFFFF, true);
+				scoreTextTextForeground.x = stage.stageWidth - (scoreTextTextForeground.width + 12);
+				scoreTextTextForeground.y = 12;
+				scoreTextTextForeground.autoScale = false;
+				scoreTextTextForeground.border = false;
+				
+				addChild(scoreTextTextForeground);
+				
+				
+				
+				
+			}
+			catch (e:Error) {
+				trace("There was an error in the creation of the texture Atlas. Please check if the dimensions of your clip exceeded the maximun allowed texture size. -", e.message);
+			}
 		}
+		
 		
 		
 		
