@@ -1,17 +1,26 @@
 package objects
 {
+	import com.emibap.textureAtlas.DynamicAtlas;
 	
+	import flash.text.Font;
+	import flash.utils.getTimer;
+	import flash.utils.setTimeout;
+	
+	import starling.display.DisplayObject;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
+	import starling.textures.TextureAtlas;
+
 	
 	public class Score extends Sprite
 	{
 		private var _displayScore:Number = 0;
 		private var _totalScore:Number = 0;
 		private const SPEED:Number = 2;
-		private var _mc:TextField;
+		
+		private var scoreBoardText:TextField;
 		
 		public function Score()
 		{
@@ -25,6 +34,22 @@ package objects
 		{
 			_displayScore = 0;
 			_totalScore = 0;
+			
+			addDisplayObjects();
+		}
+		
+		private function addDisplayObjects():void
+		{
+			
+
+			var mc:scoreboardContainer = new scoreboardContainer();
+			var atlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
+			var scoreText:String = _totalScore.toString();
+			var embeddedFont1:Font = new BadaBoomScore();
+			
+			scoreBoardText = new TextField(300, 36, "10000000000", embeddedFont1.fontName, 36, 0xFFFFFF, true);
+	
+			
 		}
 		
 		public function getScore():Number
@@ -50,7 +75,9 @@ package objects
 		
 		public function updateScoreDisplay(event:Event):void
 		{
+			trace('enter frame');
 			_displayScore += SPEED;
+			scoreBoardText.text = _displayScore.toString();
 			if(_displayScore > _totalScore)
 			{
 				_displayScore = _totalScore

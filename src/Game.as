@@ -35,15 +35,29 @@ package
 	{
 		private var levelScreen:Level;
 	 	private var gameBg:Image;
-		private var _score:Score = new Score();
+		private var _score:Score;
 		private var txtScore:Number;
-		private var scoreTextTextForeground:TextField;
+		private var scoreTextLogo:starling.display.MovieClip;
 		private const SPEED:Number = 2;
 		
 		public function Game()
 		{
 			super();
+			
+			setupGameListeners();
+			
+		}
+		
+		private function setupGameListeners():void
+		{
 			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
+			this.addEventListener(starling.events.Event.ENTER_FRAME, onGameEnterFrame);
+		}
+		
+		private function onGameEnterFrame():void
+		{
+			trace('enter frame');
+			
 		}
 		
 		private function onAddedToStage():void
@@ -51,7 +65,7 @@ package
 			//trace('straling added to stage');
 			//k now we are ready to launch the start screen
 			trace('made it to Game:onAddedToStage()');
-			addClipsFromContainer();	
+				
 			
 			gameBg = new Image(Asset.getAtlas().getTexture("level_1_bg"));
 			gameBg.x = 50;
@@ -65,6 +79,14 @@ package
 			this.addChild(levelScreen);
 			//levelScreen.initialize();
 			
+			addClipsFromContainer();
+			
+		}
+		
+		private function setupStage()
+		{
+			//we will be setting up the graphic layout.
+			//since each level will be different we will be working with
 		}
 		
 		private function addClipsFromContainer():void
@@ -75,26 +97,12 @@ package
 				var mc:scoreboardContainer = new scoreboardContainer();
 				var t1:uint = getTimer();
 				var atlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
-				var embeddedFont1:Font = new BadaBoomScore();
 				
-				var currentScore:String = "0";
-				
-				var total:uint = getTimer() - t1;
-				
-				trace(total, "msecs elapsed while converting...");
-				
-				var scoreText:starling.display.MovieClip = new starling.display.MovieClip(atlas.getTextures("mcScoreText"), 60);
-				scoreText.x = stage.stageWidth - (scoreText.width) - 280;
-				scoreText.y = 10;
-				addChild(scoreText);
-				Starling.juggler.add(scoreText);
-				
-				scoreTextTextForeground = new TextField(300, 36, currentScore, embeddedFont1.fontName, 26, 0xFFFFFF, true);
-				scoreTextTextForeground.x = stage.stageWidth - (scoreTextTextForeground.width + 12);
-				scoreTextTextForeground.y = 12;
-				
-				addChild(scoreTextTextForeground);
-				
+				var scoreTextLogo:starling.display.MovieClip = new starling.display.MovieClip(atlas.getTextures("mcScoreText"), 60);
+				scoreTextLogo.x = stage.stageWidth - (scoreTextLogo.width) - 280;
+				scoreTextLogo.y = 10;
+				addChild(scoreTextLogo);
+				Starling.juggler.add(scoreTextLogo);
 				
 				var btnAddToScore:Button = new Button(Asset.getTexture("btnPlayNow"));
 				btnAddToScore.x = 40;
@@ -103,6 +111,11 @@ package
 				btnAddToScore.addEventListener(starling.events.Event.TRIGGERED, onPlayClick);
 				
 				addChild(btnAddToScore);
+				
+				_score = new Score();
+				_score.x = 500;
+				_score.y = 0;
+				this.addChild(_score);
 				
 			}
 			catch (e:Error) {
@@ -115,27 +128,15 @@ package
 			trace('btn clicked');
 			
 			
-			
-			
 		}
 		
 		private function onScoreEnterFrame(reward:Number, currentScore:Number):void
 		{
 			// TODO Auto Generated method stub
-			var reward:Number = 1000;
-			var oldScore:Number = _score.getScore();
-			
-			trace('tick');		
-			_score.addScore(reward);
-			var newScore:Number = oldScore + reward;
-			trace('oldScore: ' + oldScore + ' AND new Score is: ' + newScore);
-			while(oldScore < newScore)
-			{
-				oldScore += SPEED;
-				trace('o:'+oldScore);
-				scoreTextTextForeground.text = oldScore.toString();
-			}
-		}		
+			trace('tick');			
+		}
+		
+		
 		
 		
 	}
