@@ -19,6 +19,7 @@ package objects
 		private var _displayScore:Number = 0;
 		private var _totalScore:Number = 0;
 		private const SPEED:Number = 2;
+		private var _target:DisplayObject;
 		
 		private var scoreBoardText:TextField;
 		
@@ -62,9 +63,10 @@ package objects
 			this.removeEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
-		public function addScore(amount:Number):void
+		public function addScore(amount:Number, target:DisplayObject):void
 		{
 			updateScore(amount);
+			this._target = target;
 		}
 		
 		public function updateScore(amount:Number):void
@@ -75,9 +77,9 @@ package objects
 		
 		public function updateScoreDisplay(event:Event):void
 		{
-			trace('enter frame');
+			
 			_displayScore += SPEED;
-			scoreBoardText.text = _displayScore.toString();
+		
 			if(_displayScore > _totalScore)
 			{
 				_displayScore = _totalScore

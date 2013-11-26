@@ -43,6 +43,17 @@ package screens
 		private var padding:Number = 10;
 		private var colHeight:Number = 64;
 		
+		private var gridLayout:Array = [
+				[1,1,1,1,1,1,1,1],
+				[1,1,1,1,1,1,1,1],
+				[1,1,1,1,1,1,1,1],
+				[1,1,1,1,1,1,1,1],
+				[1,1,1,1,1,1,1,1],
+				[1,1,1,1,1,1,1,1],
+				[1,1,1,1,1,1,1,1],
+				[1,1,1,1,1,1,1,1]
+			];
+		
 		[Embed(source="../assets/swfs/shared.swf")]
 		public static var SharedAssets:Class;
 		
@@ -98,24 +109,52 @@ package screens
 			
 			// create grid array
 			grid = new Array();
+			var gridArray:Array = new Array();
+			var currentItem:Item;
 			
 			// set grid to null
-			for(var col:Number = 0; col < numberOfCols; col++)
+			
+			var rowCount:Number = gridLayout.length;
+			var colCount:Number;
+			var gridController:MovieClip = new MovieClip;
+			for (var row:Number = 0; row < gridLayout.length; row++)
 			{
-				grid[col] = new Array();
-				for (var row:Number=0; row < numberOfRows; row++)
+				gridArray[row] = new Array();
+				for(var col:Number = 0; col < gridArray[row].length; col++)
 				{
-					grid[col][row] = new Item();
-					grid[col][row].x = nextX;
-					grid[col][row].y = nextY;
-					addChild(grid[col][row]);
-
+					currentItem = gridArray[row][col];
+					currentItem = new Item();
+					currentItem.x = nextX;
+					currentItem.y = nextY;
+					
 					nextY += Math.ceil((colHeight + padding));
 					
 				}
 				nextX += Math.ceil(colWidth + padding);
 				nextY = 0; //resets to top
+				
 			}
+			gridController.addChild(gridArray);
+			this.addChild(gridContainer);
+			/*
+			
+			for(var col:Number = 0; col < numberOfCols; col++)
+			{
+			grid[col] = new Array();
+			for (var row:Number=0; row < numberOfRows; row++)
+			{
+			grid[col][row] = new Item();
+			grid[col][row].x = nextX;
+			grid[col][row].y = nextY;
+			addChild(grid[col][row]);
+			
+			nextY += Math.ceil((colHeight + padding));
+			
+			}
+			nextX += Math.ceil(colWidth + padding);
+			nextY = 0; //resets to top
+			}
+			*/
 		}
 		
 		// *****************************************************************************

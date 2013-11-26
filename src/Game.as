@@ -54,9 +54,10 @@ package
 			this.addEventListener(starling.events.Event.ENTER_FRAME, onGameEnterFrame);
 		}
 		
-		private function onGameEnterFrame():void
+		private function onGameEnterFrame(event:Event):void
 		{
-			trace('enter frame');
+			trace('onframe');
+			this.removeEventListener(starling.events.Event.ENTER_FRAME, onGameEnterFrame);
 			
 		}
 		
@@ -83,7 +84,7 @@ package
 			
 		}
 		
-		private function setupStage()
+		private function setupStage():void
 		{
 			//we will be setting up the graphic layout.
 			//since each level will be different we will be working with
@@ -126,14 +127,8 @@ package
 		private function onPlayClick():void
 		{
 			trace('btn clicked');
+			//_score.addScore(3000);
 			
-			
-		}
-		
-		private function onScoreEnterFrame(reward:Number, currentScore:Number):void
-		{
-			// TODO Auto Generated method stub
-			trace('tick');			
 		}
 		
 		
