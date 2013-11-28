@@ -54,22 +54,10 @@ package screens
 				[1,1,1,1,1,1,1,1]
 			];
 		
-		[Embed(source="../assets/swfs/shared.swf")]
-		public static var SharedAssets:Class;
-		
-		
-		private var scoreText:TextField;
-		
-		private var scoreDisplay:MovieClip;
-		
-		[Embed(source="../assets/fonts/badabb.TTF", fontFamily="ComicText", embedAsCFF="false")]
-		public static var ComicText:Class;
-		
 		public function Level()
 		{
-			trace('Level() called');
-			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
 			
+			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
 		// *****************************************************************************
@@ -90,7 +78,7 @@ package screens
 		private function drawGrid():void
 		{
 			// set up where the columns are on screen
-			trace('drawgrid called');
+			
 			var nextLeft:Number = firstColLeft;
 			for (var i:Number = 0; i < numberOfCols; i++)
 			{
@@ -105,37 +93,32 @@ package screens
 				rowLocationY[i] = nextTop;
 				nextTop += colWidth;
 			}
-			
-			
+		
 			// create grid array
 			grid = new Array();
-			var gridArray:Array = new Array();
 			var currentItem:Item;
 			
 			// set grid to null
-			
 			var rowCount:Number = gridLayout.length;
 			var colCount:Number;
-			var gridController:MovieClip = new MovieClip;
-			for (var row:Number = 0; row < gridLayout.length; row++)
+			for(var col:Number = 0; col < numberOfCols; col++)
 			{
-				gridArray[row] = new Array();
-				for(var col:Number = 0; col < gridArray[row].length; col++)
+				
+				grid[col] = new Array();
+				for (var row:Number=0; row < numberOfRows; row++)
 				{
-					currentItem = gridArray[row][col];
-					currentItem = new Item();
-					currentItem.x = nextX;
-					currentItem.y = nextY;
+					grid[col][row] = new Item();
+					grid[col][row].x = nextX;
+					grid[col][row].y = nextY;
+					addChild(grid[col][row]);
 					
 					nextY += Math.ceil((colHeight + padding));
 					
 				}
 				nextX += Math.ceil(colWidth + padding);
 				nextY = 0; //resets to top
-				
 			}
-			gridController.addChild(gridArray);
-			this.addChild(gridContainer);
+			
 			/*
 			
 			for(var col:Number = 0; col < numberOfCols; col++)

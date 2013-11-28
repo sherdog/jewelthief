@@ -35,7 +35,7 @@ package screens
 			playBtn.x = (stage.stageWidth * 0.5) - (playBtn.width * 0.5);
 			playBtn.y = 80;
 			
-			addChild(playBtn);
+			this.addChild(playBtn);
 			
 			playBtn.addEventListener(Event.TRIGGERED, onPlayBtnClick);
 			
