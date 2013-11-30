@@ -26,14 +26,15 @@ package objects
 		}
 		
 		
-		private function createItem():void
+		private function createItem():Button
 		{
 			var _itembg:Button;
 			var randomArt:String = getRandomElementOf(items);
-
+			trace('making a button item');
 			
 			_itembg = new Button(Asset.getAtlas().getTexture( randomArt ));
-			this.addChild(_itembg);
+			return _itembg;
+			//this.addChild(_itembg);
 		}
 		
 		private function getRandomElementOf(array:Array):String {

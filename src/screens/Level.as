@@ -4,6 +4,7 @@ package screens
 	import com.greensock.easing.*;
 	
 	import objects.Item;
+	import levels.*;
 	
 	import starling.animation.Tween;
 	import starling.display.Image;
@@ -56,10 +57,7 @@ package screens
 		
 		[Embed(source="../assets/swfs/shared.swf")]
 		public static var SharedAssets:Class;
-		
-		
 		private var scoreText:TextField;
-		
 		private var scoreDisplay:MovieClip;
 		
 		[Embed(source="../assets/fonts/badabb.TTF", fontFamily="ComicText", embedAsCFF="false")]
@@ -116,26 +114,29 @@ package screens
 			
 			var rowCount:Number = gridLayout.length;
 			var colCount:Number;
-			var gridController:MovieClip = new MovieClip;
-			for (var row:Number = 0; row < gridLayout.length; row++)
+			
+			
+			for (var row:Number = 0; row < rowCount-1; row++)
 			{
+				trace('making rows');
 				gridArray[row] = new Array();
 				for(var col:Number = 0; col < gridArray[row].length; col++)
 				{
-					currentItem = gridArray[row][col];
-					currentItem = new Item();
-					currentItem.x = nextX;
-					currentItem.y = nextY;
+					grid[row][col] = new Item();
+					grid[row][col].x = nextX;
+					grid[row][col].y = nextY;
+					addChild(grid[row][col]);
+					
 					
 					nextY += Math.ceil((colHeight + padding));
 					
 				}
 				nextX += Math.ceil(colWidth + padding);
-				nextY = 0; //resets to top
+				nextY = 0;
 				
 			}
-			gridController.addChild(gridArray);
-			this.addChild(gridContainer);
+			
+			
 			/*
 			
 			for(var col:Number = 0; col < numberOfCols; col++)
