@@ -55,6 +55,7 @@ package screens
 				[1,1,1,1,1,1,1,1]
 			];
 		
+<<<<<<< HEAD
 		[Embed(source="../assets/swfs/shared.swf")]
 		public static var SharedAssets:Class;
 		private var scoreText:TextField;
@@ -63,11 +64,12 @@ package screens
 		[Embed(source="../assets/fonts/badabb.TTF", fontFamily="ComicText", embedAsCFF="false")]
 		public static var ComicText:Class;
 		
+=======
+>>>>>>> 28ac189ddb89317ed9ddbd37eedfb44f72454fa6
 		public function Level()
 		{
-			trace('Level() called');
-			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
 			
+			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
 		// *****************************************************************************
@@ -88,7 +90,7 @@ package screens
 		private function drawGrid():void
 		{
 			// set up where the columns are on screen
-			trace('drawgrid called');
+			
 			var nextLeft:Number = firstColLeft;
 			for (var i:Number = 0; i < numberOfCols; i++)
 			{
@@ -103,17 +105,15 @@ package screens
 				rowLocationY[i] = nextTop;
 				nextTop += colWidth;
 			}
-			
-			
+		
 			// create grid array
 			grid = new Array();
-			var gridArray:Array = new Array();
 			var currentItem:Item;
 			
 			// set grid to null
-			
 			var rowCount:Number = gridLayout.length;
 			var colCount:Number;
+<<<<<<< HEAD
 			
 			
 			for (var row:Number = 0; row < rowCount-1; row++)
@@ -127,16 +127,34 @@ package screens
 					grid[row][col].y = nextY;
 					addChild(grid[row][col]);
 					
+=======
+			for(var col:Number = 0; col < numberOfCols; col++)
+			{
+				
+				grid[col] = new Array();
+				for (var row:Number=0; row < numberOfRows; row++)
+				{
+					grid[col][row] = new Item();
+					grid[col][row].x = nextX;
+					grid[col][row].y = nextY;
+					addChild(grid[col][row]);
+>>>>>>> 28ac189ddb89317ed9ddbd37eedfb44f72454fa6
 					
 					nextY += Math.ceil((colHeight + padding));
 					
 				}
 				nextX += Math.ceil(colWidth + padding);
+<<<<<<< HEAD
 				nextY = 0;
 				
 			}
 			
 			
+=======
+				nextY = 0; //resets to top
+			}
+			
+>>>>>>> 28ac189ddb89317ed9ddbd37eedfb44f72454fa6
 			/*
 			
 			for(var col:Number = 0; col < numberOfCols; col++)

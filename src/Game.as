@@ -1,81 +1,108 @@
-package
+package levels
 {
-	
 	import com.emibap.textureAtlas.DynamicAtlas;
 	
-	import levels.LevelFactory;
+	import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.text.Font;
+	import flash.text.TextFormat;
+	import flash.utils.getTimer;
+	import flash.utils.setTimeout;
 	
-	import starling.core.Starling;
-	import starling.display.Button;
-	import starling.display.Image;
-	import starling.display.MovieClip;
+	import objects.Item;
+	
+	import screens.Level;
+	
 	import starling.display.Sprite;
-	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
-	import starling.text.BitmapFont;
-	import starling.text.TextField;
-	import starling.textures.Texture;
-	import starling.textures.TextureAtlas;
-	import starling.utils.Color;
 	
-	
-	
-	public class Game extends Sprite
+	public class LevelFactory extends Sprite
 	{
-	 	private var gameBg:Image;
-		private var levelLoader:LevelFactory;
+		/************************************
+		 * | Loader class
+		 * | Is responsible for loading levels
+		 * | There are a few methods that will be similar between all levels
+		 *************************************/
 		
-		import objects.Score;
+		private var currentLevel:Number;
+		private var XMLLoader:URLLoader;
+		private var xmlUrl:String;
 		
-		public function Game()
+		public function LevelFactory()
 		{
 			super();
-			setupGameListeners();
-			
+			//setupLevel();
 		}
 		
-		private function setupGameListeners():void
+		public function start():void
 		{
-			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
-			this.addEventListener(starling.events.Event.ENTER_FRAME, onGameEnterFrame);
+			//start the game! yes!
+			
 		}
 		
-		private function onGameEnterFrame(event:Event):void
+		public function loadLevel(_level:Number):void
+		{;
+			currentLevel = _level;
+			XMLLoader = new URLLoader();
+			
+			XMLLoader.addEventListener(starling.events.Event.COMPLETE, onXMLLoadComplete);
+			xmlUrl = '../../assets/xml/levels/level' + _level + '.xml';
+			XMLLoader.load(new URLRequest(xmlUrl));
+		}
+		
+		protected function onXMLLoadComplete(e:Event):void
 		{
-			this.removeEventListener(starling.events.Event.ENTER_FRAME, onGameEnterFrame);
-		}
+			trace('loaded xml completed');
+			
+		}		
 		
-		private function onAddedToStage():void
+		private function setupLevel():void
 		{
-			//trace('straling added to stage');
-			//k now we are ready to launch the start screen
-			trace('made it to Game:onAddedToStage()');
 			
-			//load level:
-			//var level:LevelLoader = new levels["Level1"]();
+			/*
+			// TODO Auto Generated method stub
+			try
+			{
+			var mc:scoreboardContainer = new scoreboardContainer();
+			var t1:uint = getTimer();
+			var atlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
 			
-			gameBg = new Image(Asset.getAtlas().getTexture("level_1_bg"));
-			gameBg.x = 50;
-			gameBg.y = 60;
+			var :starling.display.MovieClip = new starling.display.MovieClip(atlas.getTextures("mcScoreText"), 60);
+			scoreTextLogo.x = stage.stageWidth - (scoreTextLogo.width) - 280;
+			scoreTextLogo.y = 10;
+			addChild(scoreTextLogo);
+			Starling.juggler.add(scoreTextLogo);
 			
-			this.addChild(gameBg);
+			//Setup Score Container
 			
-			//levelLoader.loadLevel();
-			levelLoader = new LevelFactory();
-			levelLoader.loadLevel(1);
+			var embeddedFont1:Font = new BadaBoomScore();
+			
+			_score = new TextField(300, 36, "0", embeddedFont1.fontName, 36, 0xFFFFFF, true);
+			_score.x = 500;
+			_score.y = 10;
+			_score.name = 'scoreTicker';
+			
+			stage.addChild(_score);
+			
+			var btnAddToScore:Button = new Button(Asset.getTexture("btnPlayNow"));
+			btnAddToScore.x = 40;
+			btnAddToScore.y = 10;
+			
+			btnAddToScore.addEventListener(starling.events.Event.TRIGGERED, onPlayClick);
+			
+			addChild(btnAddToScore);
 			
 			
-		}
-		
-		private function setupStage():void
-		{
-			//we will be setting up the graphic layout.
-			//since each level will be different we will be working with
-		}
-		
-		
-		
-		
+			
+			
+			}
+			catch (e:Error) {
+			trace("There was an error in the creation of the texture Atlas. Please check if the dimensions of your clip exceeded the maximun allowed texture size. -", e.message);
+			}
+			*/
+			
+		}		
 		
 		
 		

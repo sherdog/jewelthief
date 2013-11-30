@@ -6,7 +6,6 @@ package objects
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
-	import starling.display.DisplayObject;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -16,34 +15,45 @@ package objects
 	
 	public class Score extends Sprite
 	{
+<<<<<<< HEAD
 		private var _displayScore:Number = 0;
 		private var _totalScore:Number = 0;
 		private var _scoreTicker:Object;
 		private const SPEED:Number = 2;
 		
 		private var scoreBoardText:TextField;
+=======
+>>>>>>> 28ac189ddb89317ed9ddbd37eedfb44f72454fa6
 		
 		public function Score()
 		{
 			
 			super();
+<<<<<<< HEAD
 			init();
 			//_scoreTicker = stage.getChildByName('scoreTicker');
 			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
+=======
+>>>>>>> 28ac189ddb89317ed9ddbd37eedfb44f72454fa6
 			
 		}
 
 		private function init():void
 		{
+<<<<<<< HEAD
 			_displayScore = 0;
 			_totalScore = 0;
 			
 		}
 		
+=======
+		}
+		
+	
+>>>>>>> 28ac189ddb89317ed9ddbd37eedfb44f72454fa6
 		
 		public function getScore():Number
 		{
-			return _totalScore;
 		}
 		
 		private function onAddedToStage(event:Event):void
@@ -53,30 +63,21 @@ package objects
 		
 		public function addScore(amount:Number):void
 		{
+<<<<<<< HEAD
 			updateScore(amount);
+=======
+>>>>>>> 28ac189ddb89317ed9ddbd37eedfb44f72454fa6
 		}
 		
 		public function updateScore(amount:Number):void
 		{
-			_totalScore += amount;
-			addEventListener(starling.events.Event.ENTER_FRAME, updateScoreDisplay);
+		
 		}
 		
 		public function updateScoreDisplay(event:Event):void
 		{
 			
-			_displayScore += SPEED;
 		
-			if(_displayScore > _totalScore)
-			{
-				_displayScore = _totalScore
-			}
-			
-			if(_totalScore == _displayScore)
-			{
-				this.removeEventListener(starling.events.Event.ENTER_FRAME, updateScoreDisplay);
-			}
-			
 		}
 	}
 }
