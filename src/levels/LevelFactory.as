@@ -1,21 +1,11 @@
 package levels
 {
-	import com.emibap.textureAtlas.DynamicAtlas;
-	
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.text.Font;
-	import flash.text.TextFormat;
-	import flash.utils.getTimer;
-	import flash.utils.setTimeout;
-	
-	import objects.Item;
-	
-	import screens.Level;
+	import flash.utils.ByteArray;
 	
 	import starling.display.Sprite;
-	import starling.events.Event;
 	
 	public class LevelFactory extends Sprite
 	{
@@ -26,8 +16,22 @@ package levels
 		 *************************************/
 		
 		private var currentLevel:Number;
-		private var XMLLoader:URLLoader;
-		private var xmlUrl:String;
+		private var _jsonLoader:URLLoader = new URLLoader();
+		
+		[Embed(source="../assets/xml/levels/levels.xml", mimeType="application/octet-stream")]
+		private var levelsXML:Class;
+		
+		private var levelXML:XML;
+		
+		//Setup level vars
+		private var _levelMode:String = "time";
+		private var _levelBlocks:String = "";
+		private var _levelRows:Array = [];
+		private var _levelBackground:String = "";
+		private var _levelMultiplier:Number = 1;
+		private var _levelModeGetItems:String = "";
+		private var _levelTime:Number = 0;
+		private var _levelScore: Number = 0;
 		
 		public function LevelFactory()
 		{
@@ -42,13 +46,84 @@ package levels
 		}
 		
 		public function loadLevel(_level:Number):void
-		{;
-			currentLevel = _level;
-			XMLLoader = new URLLoader();
+		{
 			
-			XMLLoader.addEventListener(starling.events.Event.COMPLETE, onXMLLoadComplete);
-			xmlUrl = '../../assets/xml/levels/level' + _level + '.xml';
-			XMLLoader.load(new URLRequest(xmlUrl));
+			//load json for level data.
+			
+			
+			_jsonLoader.addEventListener(Event.COMPLETE, processJSON);
+			_jsonLoader.load(new URLRequest('../assets/xml/levels/levels.json'));
+			
+			trace('made it to load level with level ' + _level);
+			currentLevel = _level;
+			
+			var ba:ByteArray = new levelsXML();
+			var st:String = ba.readUTFBytes(ba.length);
+			
+			levelXML = new XML(st);
+			
+		}
+		
+		private function processJSON(e:flash.events.Event):void
+		{
+			trace('made it tot he JSON event handler');
+			var stringJSON:String;
+			var temp:Object;
+			var levelObject:Object = JSON.parse(_jsonLoader.data);
+			var _currentLevel:Number = this.currentLevel-1;
+			var currentLevelData:Object = levelObject.levels[_currentLevel];
+			
+			
+			//let's get the properies for this level.
+			
+			_levelMode = currentLevelData.mode;
+			_levelBlocks = currentLevelData.blocks;
+			
+			switch(_levelMode)
+			{
+				case 'time':
+				default:
+					_levelTime = currentLevelData.time;
+					break;
+				case 'score':
+					_levelScore = currentLevelData.score;
+					break;
+				case 'getItems':
+					_levelModeGetItems = currentLevelData.getItems;
+					break;
+			}
+			
+			
+			_levelMultiplier = currentLevelData.multiplier;
+			_levelBackground = currentLevelData.background;
+				
+			var tmpRows:Array = [];
+			//setup rows();
+			
+			for (var prop2:String in currentLevelData.rows)
+			{
+				var tmpVal:String = currentLevelData.rows[prop2];
+				var tmpArr:Array = tmpVal.split(",");
+				tmpRows.push(tmpArr);
+
+			}
+			_levelRows = tmpRows;
+				
+			
+			setupLevel();
+		}
+		
+		private function setupLevel():void
+		{
+			//now that we've parsed the lvel json record and set our variables we can now setup the level.
+			trace("Rows: " + _levelRows.length);
+			
+			for(var i:String in _levelRows)
+			{
+				trace(i_levelRows[i]);
+			}
+			
+			
 		}
 		
 		protected function onXMLLoadComplete(e:Event):void
@@ -57,52 +132,7 @@ package levels
 			 
 		}		
 		
-		private function setupLevel():void
-		{
-			
-			/*
-			// TODO Auto Generated method stub
-			try
-			{
-			var mc:scoreboardContainer = new scoreboardContainer();
-			var t1:uint = getTimer();
-			var atlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mc, 1, 0, true, true);
-			
-			var :starling.display.MovieClip = new starling.display.MovieClip(atlas.getTextures("mcScoreText"), 60);
-			scoreTextLogo.x = stage.stageWidth - (scoreTextLogo.width) - 280;
-			scoreTextLogo.y = 10;
-			addChild(scoreTextLogo);
-			Starling.juggler.add(scoreTextLogo);
-			
-			//Setup Score Container
-			
-			var embeddedFont1:Font = new BadaBoomScore();
-			
-			_score = new TextField(300, 36, "0", embeddedFont1.fontName, 36, 0xFFFFFF, true);
-			_score.x = 500;
-			_score.y = 10;
-			_score.name = 'scoreTicker';
-			
-			stage.addChild(_score);
-			
-			var btnAddToScore:Button = new Button(Asset.getTexture("btnPlayNow"));
-			btnAddToScore.x = 40;
-			btnAddToScore.y = 10;
-			
-			btnAddToScore.addEventListener(starling.events.Event.TRIGGERED, onPlayClick);
-			
-			addChild(btnAddToScore);
-			
-			
-			
-			
-			}
-			catch (e:Error) {
-			trace("There was an error in the creation of the texture Atlas. Please check if the dimensions of your clip exceeded the maximun allowed texture size. -", e.message);
-			}
-			*/
-			
-		}		
+		
 		
 		
 		
