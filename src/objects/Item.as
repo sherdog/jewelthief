@@ -12,6 +12,9 @@ package objects
 		private var itemArt:MovieClip;
 		private var items:Array = new Array('teal_gem', 'blue_gem', 'green_gem', 'purple-pink_gem','purple_gem', 'red_heart', 'white_diamond', 'yellow_gem');
 		private var itemName:String;
+		public var col:int;
+		public var row:int;
+		public var type:String;
 		
 		public function Item()
 		{
@@ -29,10 +32,12 @@ package objects
 		private function createItem():Button
 		{
 			var _itembg:Button;
-			var randomArt:String = getRandomElementOf(items);
+			var randomEle:String = getRandomElementOf(items);
+			var randomArt:String = randomEle;
 			trace('making a button item');
 			
 			_itembg = new Button(Asset.getAtlas().getTexture( randomArt ));
+			this.type = randomEle;
 			return _itembg;
 			//this.addChild(_itembg);
 		}

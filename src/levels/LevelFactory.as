@@ -5,7 +5,10 @@ package levels
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	
+	import objects.Item;
+	
 	import starling.display.Sprite;
+	import starling.events.Event;
 	
 	public class LevelFactory extends Sprite
 	{
@@ -26,17 +29,44 @@ package levels
 		//Setup level vars
 		private var _levelMode:String = "time";
 		private var _levelBlocks:String = "";
-		private var _levelRows:Array = [];
+		private var _levelRows:Array;
 		private var _levelBackground:String = "";
 		private var _levelMultiplier:Number = 1;
 		private var _levelModeGetItems:String = "";
 		private var _levelTime:Number = 0;
 		private var _levelScore: Number = 0;
+		private var _currentLevel: Number = 0;
+		
+		private const _cellHeight:Number = 64;
+		private const _cellWidth:Number = 64;
+		private const _offsetX:Number = 5;
+		private const _offsetY:Number = 5;
+		
+		private var gameSprite:Sprite;
+		private var isDropping:Boolean;
+		private var isSwapping:Boolean;
+		private var gameScore:int;
+		
+		private var grid:Array;
+		
 		
 		public function LevelFactory()
 		{
 			super();
 			//setupLevel();
+			setupEventListeners();
+		}
+		
+		private function setupEventListeners():void
+		{
+			// TODO Auto Generated method stub
+			this.addEventListener(starling.events.Event.ENTER_FRAME, onEnterFrame);
+		}		
+		
+		private function onEnterFrame(e:starling.events.Event):void
+		{
+			// TODO Auto Generated method stub
+			this.removeEventListener(starling.events.Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		public function start():void
@@ -48,93 +78,160 @@ package levels
 		public function loadLevel(_level:Number):void
 		{
 			
-			//load json for level data.
-			
-			
-			_jsonLoader.addEventListener(Event.COMPLETE, processJSON);
-			_jsonLoader.load(new URLRequest('../assets/xml/levels/levels.json'));
 			
 			trace('made it to load level with level ' + _level);
 			currentLevel = _level;
 			
-			var ba:ByteArray = new levelsXML();
-			var st:String = ba.readUTFBytes(ba.length);
+			//load json for level data.
+			_jsonLoader.addEventListener(starling.events.Event.COMPLETE, processJSON);
+			_jsonLoader.load(new URLRequest('../assets/xml/levels/levels.json'));
 			
-			levelXML = new XML(st);
+			
 			
 		}
 		
 		private function processJSON(e:flash.events.Event):void
 		{
-			trace('made it tot he JSON event handler');
 			var stringJSON:String;
 			var temp:Object;
-			var levelObject:Object = JSON.parse(_jsonLoader.data);
-			var _currentLevel:Number = this.currentLevel-1;
-			var currentLevelData:Object = levelObject.levels[_currentLevel];
+			var levelObject:Object = JSON.parse(e.target.data);
 			
+			var _levelData:Object = levelObject.levels[1];
+						//let's get the properies for this level.
 			
-			//let's get the properies for this level.
-			
-			_levelMode = currentLevelData.mode;
-			_levelBlocks = currentLevelData.blocks;
+			_levelMode = _levelData.mode;
+			_levelBlocks = _levelData.blocks;
 			
 			switch(_levelMode)
 			{
 				case 'time':
 				default:
-					_levelTime = currentLevelData.time;
+					_levelTime = _levelData.time;
 					break;
 				case 'score':
-					_levelScore = currentLevelData.score;
+					_levelScore = _levelData.score;
 					break;
 				case 'getItems':
-					_levelModeGetItems = currentLevelData.getItems;
+					_levelModeGetItems = _levelData.getItems;
 					break;
 			}
 			
-			
-			_levelMultiplier = currentLevelData.multiplier;
-			_levelBackground = currentLevelData.background;
+			_levelMultiplier = _levelData.multiplier;
+			_levelBackground = _levelData.background;
 				
-			var tmpRows:Array = [];
-			//setup rows();
+			grid = new Array();
+			var tmpArr:Array;
 			
-			for (var prop2:String in currentLevelData.rows)
+			for (var i:int; i<_levelData.rows.length; i++)
 			{
-				var tmpVal:String = currentLevelData.rows[prop2];
-				var tmpArr:Array = tmpVal.split(",");
-				tmpRows.push(tmpArr);
-
+				var tmpVal:Object = _levelData.rows[i];
+				var rowStr:String = tmpVal.row;
+				tmpArr = rowStr.split(",");
+				grid.push(tmpArr);
 			}
-			_levelRows = tmpRows;
-				
-			
-			setupLevel();
+			_levelRows = grid;
+			startMatch();
 		}
 		
-		private function setupLevel():void
+		private function startMatch():void
 		{
+			isDropping = false;
+			isSwapping = false;
+			
+			var currentRow:Number=0;
+			
+			var gameScore:int = 0;
+			
+			grid = new Array();
+			for(var gridrows:int=0;gridrows<_levelRows.length; gridrows++)
+			{
+				grid.push(new Array());
+			}
+			trace('made it to startMatch');
+			drawLevel();
+			/*
 			//now that we've parsed the lvel json record and set our variables we can now setup the level.
-			trace("Rows: " + _levelRows.length);
-			
-			for(var i:String in _levelRows)
+			for(var k:int; k<_levelRows.length; k++)
 			{
-				trace(i_levelRows[i]);
+			for(var i:int=0; i<_levelRows[k].length; i++)
+			{
+			currentRow = _levelRows[k][i];
+			if(currentRow == 0)
+			{
+			trace('block of some sort');
 			}
-			
-			
+			else
+			{
+			trace('gem');
+			}
+			}
+			}
+			*/
 		}
 		
-		protected function onXMLLoadComplete(e:Event):void
+		private function drawLevel():void
 		{
-			trace('loaded xml completed');
-			 
+			trace('made it to drawLevel()');
+			while(true)
+			{
+				gameSprite = new Sprite();
+				for(var row:int; row<_levelRows.length; row++)
+				{
+					for(var col:int; col<_levelRows[row].length; col++)
+					{
+						addItem(col,row);
+						trace('adding item at ' + col + ', ' + row);
+					}
+				}
+				if (lookForMatches().length != 0) continue;
+				// try again if no possible moves
+				if (lookForPossibles() == false) continue;
+				// no matches, but possibles exist: good board found
+				break;
+			}
+			
+			this.addChild(gameSprite);
+			
 		}		
 		
+		private function lookForMatches():Object
+		{
+			// TODO Auto Generated method stub
+			return "";
+		}
 		
+		private function lookForPossibles():Boolean
+		{
+			// TODO Auto Generated method stub
+			return false;
+		}
 		
+		private function addItem(col:int, row:int):Item
+		{
+			// TODO Auto Generated method stub
+			var _item:Item = new Item();
+			
+			_item.x = col*_cellWidth+_offsetX;
+			_item.y = row*_cellHeight+_offsetY;
+			
+			_item.col = col;
+			_item.row = row;
+			
+			_item.visible = true;
+			
+			gameSprite.addChild(_item);
+			
+			grid[col][row] = _item;
+			
+			_item.addEventListener(starling.events.Event.TRIGGERED, onItemTrigger);
+			
+			return _item;
+		}		
 		
+		private function onItemTrigger():void
+		{
+			trace('click ');
+		}		
 		
 		
 	}
