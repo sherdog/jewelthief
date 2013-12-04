@@ -12,20 +12,27 @@ package objects
 		private var itemArt:MovieClip;
 		private var items:Array = new Array('teal_gem', 'blue_gem', 'green_gem', 'purple-pink_gem','purple_gem', 'red_heart', 'white_diamond', 'yellow_gem');
 		private var itemName:String;
-		public var col:int;
+		
 		public var row:int;
-		public var type:String;
+		public var col:int;
+		public var type:int;
 		
 		public function Item()
 		{
 			super();
-			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, onAddedToStage);
+			init();
+		}
+		
+		private function init():void
+		{
+			trace('MADE IT ITEM ADDED_TO_STAGE CALLBACK');
+			createItem();
+			
 		}
 		
 		private function onAddedToStage(event:Event):void
 		{
-			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			createItem();
+		
 		}
 		
 		
@@ -34,10 +41,10 @@ package objects
 			var _itembg:Button;
 			var randomEle:String = getRandomElementOf(items);
 			var randomArt:String = randomEle;
-			trace('making a button item');
+			trace('making a button item ' + randomArt);
 			
 			_itembg = new Button(Asset.getAtlas().getTexture( randomArt ));
-			this.type = randomEle;
+			
 			return _itembg;
 			//this.addChild(_itembg);
 		}

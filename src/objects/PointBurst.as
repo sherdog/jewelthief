@@ -1,10 +1,11 @@
 package objects {
 	import flash.events.*;
-	import flash.text.*;
 	import flash.utils.Timer;
 	
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
+	import starling.text.TextField;
+	import starling.utils.Color;
 	
 	public class PointBurst extends Sprite {
 		// text style
@@ -19,28 +20,17 @@ package objects {
 		private var startScale:Number = 0;
 		private var endScale:Number = 2.0;
 		
-		private var tField:TextField;
+		private var tField:starling.text.TextField;
 		private var burstSprite:Sprite;
-		private var parentMC:MovieClip;
+		private var parentMC:Sprite;
 		private var animTimer:Timer;		
 		
-		public function PointBurst(mc:starling.display.MovieClip, pts:Object, x,y:Number) {
+		public function PointBurst(mc:starling.display.Sprite, pts:Object, x:Number,y:Number) {
 			
-			// create text format
-			var tFormat:TextFormat = new TextFormat();
-			tFormat.font = fontFace;
-			tFormat.size = fontSize;
-			tFormat.bold = fontBold;
-			tFormat.color = fontColor;
-			tFormat.align = "center";
+			// create text format''
 			
 			// create text field
-			tField = new TextField();
-			tField.embedFonts = true;
-			tField.selectable = false;
-			tField.defaultTextFormat = tFormat;
-			tField.autoSize = TextFieldAutoSize.CENTER;
-			tField.text = String(pts);
+			tField = new TextField( 100, 200, "Text", "Arial", 12, Color.RED);
 			tField.x = -(tField.width/2);
 			tField.y = -(tField.height/2);
 			
@@ -63,7 +53,7 @@ package objects {
 		}
 		
 		// animate
-		public function rescaleBurst(event:TimerEvent) {
+		public function rescaleBurst(event:TimerEvent):void {
 			// how far along are we
 			var percentDone:Number = event.target.currentCount/animSteps;
 			// set scale and alpha
@@ -73,7 +63,7 @@ package objects {
 		}
 		
 		// all done, remove self
-		public function removeBurst(event:TimerEvent) {
+		public function removeBurst(event:TimerEvent):void {
 			burstSprite.removeChild(tField);
 			parentMC.removeChild(burstSprite);
 			tField = null;

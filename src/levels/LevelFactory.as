@@ -38,6 +38,8 @@ package levels
 		private var _levelScore: Number = 0;
 		private var _currentLevel: Number = 0;
 		
+		private var _item:Item;
+		
 		private const _cellHeight:Number = 64;
 		private const _cellWidth:Number = 64;
 		private const _offsetX:Number = 5;
@@ -83,14 +85,11 @@ package levels
 		{
 			
 			
-			trace('made it to load level with level ' + _level);
 			currentLevel = _level;
 			
 			//load json for level data.
 			_jsonLoader.addEventListener(flash.events.Event.COMPLETE, onJsonComplete);
 			_jsonLoader.load(new URLRequest('../assets/xml/levels/levels.json'));
-			
-			
 			
 		}
 		
@@ -123,17 +122,17 @@ package levels
 			_levelMultiplier = _levelData.multiplier;
 			_levelBackground = _levelData.background;
 				
-			grid = new Array();
 			var tmpArr:Array;
+			var tmpGrid:Array = new Array();
 			
 			for (var i:int; i<_levelData.rows.length; i++)
 			{
 				var tmpVal:Object = _levelData.rows[i];
 				var rowStr:String = tmpVal.row;
 				tmpArr = rowStr.split(",");
-				grid.push(tmpArr);
+				tmpGrid.push(tmpArr);
 			}
-			_levelRows = grid;
+			_levelRows = tmpGrid;
 
 			
 			/* START MATCH */
@@ -146,51 +145,32 @@ package levels
 			isSwapping = false;
 			
 			var currentRow:Number=0;
-			
 			var gameScore:int = 0;
 			
 			grid = new Array();
-			for(var gridrows:int=0;gridrows<_levelRows.length; gridrows++)
+			
+			for( var gridrows:int=0; gridrows<_levelRows.length; gridrows++ )
 			{
 				grid.push(new Array());
 			}
-			trace('made it to startMatch');
 			drawLevel();
 			
-			
-			/*
-			//now that we've parsed the lvel json record and set our variables we can now setup the level.
-			for(var k:int; k<_levelRows.length; k++)
-			{
-			for(var i:int=0; i<_levelRows[k].length; i++)
-			{
-			currentRow = _levelRows[k][i];
-			if(currentRow == 0)
-			{
-			trace('block of some sort');
-			}
-			else
-			{
-			trace('gem');
-			}
-			}
-			}
-			*/
 		}
 		
 		private function drawLevel():void
 		{
-			trace('made it to drawLevel()');
+			var hasItem:String;
+			var startNum:Number = 0;
 			while(true)
 			{
+				row=0;
 				gameSprite = new Sprite();
-				for(var row:int; row<_levelRows.length; row++)
+				for(var row:int=0; row<_levelRows.length; row++)
 				{
-					trace('row');
-					for(var col:int; col<_levelRows[row].length; col++)
+					for(var col:int=0; col<_levelRows[row].length; col++)
 					{
-						addItem(col,row);
-						trace('adding item at ' + col + ', ' + row);
+						hasItem = _levelRows[row][col];
+						addItem(col,row, hasItem);
 					}
 				}
 				if (lookForMatches().length != 0) continue;
@@ -198,31 +178,28 @@ package levels
 				if (lookForPossibles() == false) continue;
 				// no matches, but possibles exist: good board found
 				break;
+				startNum++;
 			}
 			
-			this.addChild(gameSprite);
+			trace('K were ready');
+			addChild(gameSprite);
 			
 		}		
 		
-		private function addItem(col:int, row:int):Item
+		private function addItem(col:int, row:int, hasItem:String = "1"):Item
 		{
-			// TODO Auto Generated method stub
-			var _item:Item = new Item();
-			trace('item.x is being set to: ' + col*_cellWidth+_offsetX);
-			
-			
-			
-			_item.x = col*_cellWidth+_offsetX;
-			_item.y = row*_cellHeight+_offsetY;
+			_item = new Item();
+			trace('the x will be: ' + (col * _cellWidth) );
+			trace('the y will be: ' + (row * _cellHeight));
+			_item.x = (col * _cellWidth) + _offsetX;
+			_item.y = (row * _cellHeight) + _offsetY;
 			
 			_item.col = col;
 			_item.row = row;
-			
-			_item.visible = true;
-			
-			gameSprite.addChild(_item);
+			_item.type = Math.ceil(Math.random()*7);
 			
 			grid[col][row] = _item;
+			this.addChild(_item);
 			
 			_item.addEventListener(starling.events.Event.TRIGGERED, onItemTrigger);
 			
@@ -241,9 +218,8 @@ package levels
 		}
 		
 		// start animated swap of two pieces
-		public function makeSwap(piece1,piece2:Item) {
+		public function makeSwap(piece1:Item,piece2:Item):void {
 			swapPieces(piece1,piece2);
-			
 			// check to see if move was fruitful
 			if (lookForMatches().length == 0) {
 				swapPieces(piece1,piece2);
@@ -253,7 +229,7 @@ package levels
 		}
 		
 		// swap two pieces
-		public function swapPieces(piece1,piece2:Item) {
+		public function swapPieces(piece1:Item,piece2:Item):void {
 			// swap row and col values
 			var tempCol:uint = piece1.col;
 			var tempRow:uint = piece1.row;
@@ -270,7 +246,7 @@ package levels
 		
 		// if any pieces are out of place, move them a step closer to being in place
 		// happens when pieces are swapped, or they are dropping
-		public function movePieces(event:flash.events.Event) {
+		public function movePieces(event:flash.events.Event):void {
 			var madeMove:Boolean = false;
 			for(var row:int=0;row<8;row++) {
 				for(var col:int=0;col<8;col++) {
@@ -314,7 +290,7 @@ package levels
 		
 		
 		// gets matches and removes them, applies points
-		public function findAndRemoveMatches() {
+		public function findAndRemoveMatches():void {
 			
 			// get list of matches
 			var matches:Array = lookForMatches();
@@ -322,7 +298,7 @@ package levels
 				var numPoints:Number = (matches[i].length-1)*50;
 				for(var j:int=0;j<matches[i].length;j++) {
 					if (gameSprite.contains(matches[i][j])) {
-						var pb = new PointBurst(this,numPoints,matches[i][j].x,matches[i][j].y);
+						var pb:PointBurst = new PointBurst(this,numPoints,matches[i][j].x,matches[i][j].y);
 						addScore(numPoints);
 						gameSprite.removeChild(matches[i][j]);
 						grid[matches[i][j].col][matches[i][j].row] = null;
@@ -335,8 +311,10 @@ package levels
 			addNewPieces();
 			
 			// no matches found, maybe the game is over?
-			if (matches.length == 0) {
-				if (!lookForPossibles()) {
+			if (matches.length == 0) 
+			{
+				if (!lookForPossibles()) 
+				{
 					endGame();
 				}
 			}
@@ -347,10 +325,13 @@ package levels
 			var matchList:Array = new Array();
 			
 			// search for horizontal matches
-			for (var row:int=0;row<8;row++) {
-				for(var col:int=0;col<6;col++) {
+			for (var row:int=0;row<8;row++)
+			{
+				for(var col:int=0;col<6;col++)
+				{
 					var match:Array = getMatchHoriz(col,row);
-					if (match.length > 2) {
+					if (match.length > 2)
+					{
 						matchList.push(match);
 						col += match.length-1;
 					}
@@ -358,10 +339,13 @@ package levels
 			}
 			
 			// search for vertical matches
-			for(col=0;col<8;col++) {
-				for (row=0;row<6;row++) {
+			for(col=0;col<8;col++)
+			{
+				for (row=0;row<6;row++)
+				{
 					match = getMatchVert(col,row);
-					if (match.length > 2) {
+					if (match.length > 2)
+					{
 						matchList.push(match);
 						row += match.length-1;
 					}
@@ -372,12 +356,17 @@ package levels
 		}
 		
 		// look for horizontal matches starting at this point
-		public function getMatchHoriz(col,row):Array {
+		public function getMatchHoriz(col:int,row:int):Array {
 			var match:Array = new Array(grid[col][row]);
-			for(var i:int=1;col+i<8;i++) {
-				if (grid[col][row].type == grid[col+i][row].type) {
+			for(var i: int=1; col+i<8; i++ ) 
+			{
+				trace('grid1 type: ' + grid[col][row].type + ' and row|col ' + col + ' ' + row);
+				if ( grid[col][row].type == grid[col+i][row].type ) 
+				{
 					match.push(grid[col+i][row]);
-				} else {
+				} 
+				else 
+				{
 					return match;
 				}
 			}
@@ -385,12 +374,17 @@ package levels
 		}
 		
 		// look for vertical matches starting at this point
-		public function getMatchVert(col,row):Array {
+		public function getMatchVert(col:int,row:int):Array 
+		{
 			var match:Array = new Array(grid[col][row]);
-			for(var i:int=1;row+i<8;i++) {
-				if (grid[col][row].type == grid[col][row+i].type) {
+			for(var i:int=1;row+i<8;i++)
+			{
+				if (grid[col][row].type == grid[col][row+i].type)
+				{
 					match.push(grid[col][row+i]);
-				} else {
+				} 
+				else 
+				{
 					return match;
 				}
 			}
@@ -398,9 +392,12 @@ package levels
 		}
 		
 		// tell all pieces above this one to move down
-		public function affectAbove(piece:Item) {
-			for(var row:int=piece.row-1;row>=0;row--) {
-				if (grid[piece.col][row] != null) {
+		public function affectAbove(piece:Item):void
+		{
+			for(var row:int=piece.row-1;row>=0;row--)
+			{
+				if (grid[piece.col][row] != null)
+				{
 					grid[piece.col][row].row++;
 					grid[piece.col][row+1] = grid[piece.col][row];
 					grid[piece.col][row] = null;
@@ -409,11 +406,15 @@ package levels
 		}
 		
 		// if there are missing pieces in a column, add one to drop
-		public function addNewPieces() {
-			for(var col:int=0;col<8;col++) {
+		public function addNewPieces():void
+		{
+			for(var col:int=0;col<8;col++)
+			{
 				var missingPieces:int = 0;
-				for(var row:int=7;row>=0;row--) {
-					if (grid[col][row] == null) {
+				for(var row:int=7;row>=0;row--)
+				{
+					if (grid[col][row] == null)
+					{
 						var newPiece:Item = addItem(col,row);
 						newPiece.y = _offsetY - _cellWidth - _cellWidth * missingPieces++;
 						isDropping = true;
@@ -423,7 +424,7 @@ package levels
 		}
 		
 		// look to see if a possible move is on the board
-		public function lookForPossibles() {
+		public function lookForPossibles():Boolean {
 			for(var col:int=0;col<8;col++) {
 				for(var  row:int=0;row<8;row++) {
 					
@@ -453,7 +454,7 @@ package levels
 			return false;
 		}
 		
-		public function matchPattern(col,row:uint, mustHave, needOne:Array) {
+		public function matchPattern(col:int,row:uint, mustHave:Array, needOne:Array):Boolean {
 			var thisType:int = grid[col][row].type;
 			
 			// make sure this has all must-haves
@@ -472,29 +473,29 @@ package levels
 			return false;
 		}
 		
-		public function matchType(col,row,type:int) {
+		public function matchType(col:int,row:int,type:int):Boolean {
 			// make sure col and row aren't beyond the limit
 			if ((col < 0) || (col > 7) || (row < 0) || (row > 7)) return false;
 			return (grid[col][row].type == type);
 		}
 		
-		public function addScore(numPoints:int) {
+		public function addScore(numPoints:int):void {
 			gameScore += numPoints;
 			//MovieClip(root).scoreDisplay.text = String(gameScore);
 		}
 		
-		public function endGame() {
+		public function endGame():void {
 			// move to back
 			setChildIndex(gameSprite,0);
 			// go to end game
 			//gotoAndStop("gameover");
 		}
 		
-		public function cleanUp() {
+		public function cleanUp():void {
 			grid = null;
 			removeChild(gameSprite);
 			gameSprite = null;
-			removeEventListener(Event.ENTER_FRAME,movePieces);
+			removeEventListener(starling.events.Event.ENTER_FRAME,movePieces);
 		}
 		
 		

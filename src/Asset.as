@@ -20,7 +20,6 @@ package
 		[Embed(source="../assets/images/gameAssets_1.png")]
 		public static const AtlasTextureGame:Class;
 		
-		
 		[Embed(source="../assets/images/gameAssets_1.xml", mimeType="application/octet-stream")]
 		public static const AtlasXmlGame:Class;
 		
