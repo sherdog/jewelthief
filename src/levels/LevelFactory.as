@@ -157,8 +157,11 @@ package levels
 		
 		private function drawLevel():void
 		{
-			var hasItem:String;
-			var startNum:Number = 0;
+			var hasItem:String; //in our array we have a 0 or 1 signaling has gem or not
+			//to have it load a specific image 
+			//used to create randle levels with obstacles
+			//use 2-x for diff effects
+			var startNum:Number = 0; //need to delete
 			
 			while(true)
 			{
@@ -171,7 +174,7 @@ package levels
 					for(var col:int=0; col<_levelRows[row].length; col++)
 					{
 						hasItem = _levelRows[row][col];
-						addItem(col,row,gameSprite,hasItem);
+						addItem(col,row,hasItem);
 					}
 				}
 				if (lookForMatches().length != 0) continue;

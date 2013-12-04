@@ -23,11 +23,11 @@ package objects
 			init();
 		}
 		
-		private function init():void
+		private function init():Button
 		{
-			trace('MADE IT ITEM ADDED_TO_STAGE CALLBACK');
-			createItem();
-			
+			var btn:Button =  createItem();
+			trace('button: ' + btn);
+			return btn;
 		}
 		
 		private function onAddedToStage(event:Event):void
