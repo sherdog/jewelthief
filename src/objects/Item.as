@@ -41,12 +41,9 @@ package objects
 			var _itembg:Button;
 			var randomEle:String = getRandomElementOf(items);
 			var randomArt:String = randomEle;
-			trace('making a button item ' + randomArt);
 			
 			_itembg = new Button(Asset.getAtlas().getTexture( randomArt ));
-			
 			return _itembg;
-			//this.addChild(_itembg);
 		}
 		
 		private function getRandomElementOf(array:Array):String {

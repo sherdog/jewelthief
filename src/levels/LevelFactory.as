@@ -8,6 +8,7 @@ package levels
 	import objects.Item;
 	import objects.PointBurst;
 	
+	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
@@ -83,8 +84,6 @@ package levels
 		
 		public function loadLevel(_level:Number):void
 		{
-			
-			
 			currentLevel = _level;
 			
 			//load json for level data.
@@ -99,8 +98,7 @@ package levels
 			var temp:Object;
 			var levelObject:Object = JSON.parse(e.target.data);
 			
-			var _levelData:Object = levelObject.levels[1];
-						//let's get the properies for this level.
+			var _levelData:Object = levelObject.levels[1]; //TMP REPLACE WITH ACUTAL OBJECT.level property
 			
 			_levelMode = _levelData.mode;
 			_levelBlocks = _levelData.blocks;
@@ -161,16 +159,19 @@ package levels
 		{
 			var hasItem:String;
 			var startNum:Number = 0;
+			
 			while(true)
 			{
-				row=0;
+				row = 0;
 				gameSprite = new Sprite();
+				gameSprite.x = 30;
+				gameSprite.y = 0;
 				for(var row:int=0; row<_levelRows.length; row++)
 				{
 					for(var col:int=0; col<_levelRows[row].length; col++)
 					{
 						hasItem = _levelRows[row][col];
-						addItem(col,row, hasItem);
+						addItem(col,row,gameSprite,hasItem);
 					}
 				}
 				if (lookForMatches().length != 0) continue;
@@ -180,27 +181,21 @@ package levels
 				break;
 				startNum++;
 			}
-			
-			trace('K were ready');
-			addChild(gameSprite);
+			this.addChild(gameSprite);
 			
 		}		
 		
 		private function addItem(col:int, row:int, hasItem:String = "1"):Item
 		{
 			_item = new Item();
-			trace('the x will be: ' + (col * _cellWidth) );
-			trace('the y will be: ' + (row * _cellHeight));
 			_item.x = (col * _cellWidth) + _offsetX;
 			_item.y = (row * _cellHeight) + _offsetY;
-			
 			_item.col = col;
 			_item.row = row;
 			_item.type = Math.ceil(Math.random()*7);
 			
-			grid[col][row] = _item;
 			this.addChild(_item);
-			
+			grid[col][row] = _item;
 			_item.addEventListener(starling.events.Event.TRIGGERED, onItemTrigger);
 			
 			return _item;
