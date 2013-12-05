@@ -2,6 +2,7 @@ package
 {
 	import levels.LevelFactory;
 	
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 
@@ -19,12 +20,9 @@ package
 		{
 			// TODO Auto Generated method stub
 			//trace('added game to stage');
-			
+		
 			levelToLoad = new LevelFactory();
 			levelToLoad.loadLevel(1);
-			trace('after load of level');
-			
-			//now we'll figure out where we are in the game. since we may be running, we may just be calling a new level and stuff.
 			
 			
 		}

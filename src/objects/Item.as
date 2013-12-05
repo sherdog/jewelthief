@@ -9,7 +9,7 @@ package objects
 	
 	public class Item extends Sprite
 	{
-		private var itemArt:MovieClip;
+		private var itemArt:Image;
 		private var items:Array = new Array('teal_gem', 'blue_gem', 'green_gem', 'purple-pink_gem','purple_gem', 'red_heart', 'white_diamond', 'yellow_gem');
 		private var itemName:String;
 		
@@ -20,30 +20,22 @@ package objects
 		public function Item()
 		{
 			super();
-			init();
-		}
-		
-		private function init():Button
-		{
-			var btn:Button =  createItem();
-			trace('button: ' + btn);
-			return btn;
-		}
-		
-		private function onAddedToStage(event:Event):void
-		{
-		
-		}
-		
-		
-		private function createItem():Button
-		{
-			var _itembg:Button;
+			
 			var randomEle:String = getRandomElementOf(items);
 			var randomArt:String = randomEle;
+			itemArt = new Image(Asset.getAtlas().getTexture(randomArt));
 			
-			_itembg = new Button(Asset.getAtlas().getTexture( randomArt ));
-			return _itembg;
+			this.addChild(itemArt);
+			itemArt.width = 64;
+			itemArt.height = 64;
+			
+			trace('adding image ' + randomArt);
+		
+		}
+		
+		private function createItem():void
+		{
+			
 		}
 		
 		private function getRandomElementOf(array:Array):String {

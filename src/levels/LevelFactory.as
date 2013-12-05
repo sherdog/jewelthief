@@ -8,6 +8,7 @@ package levels
 	import objects.Item;
 	import objects.PointBurst;
 	
+	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -165,16 +166,14 @@ package levels
 			
 			while(true)
 			{
-				row = 0;
-				gameSprite = new Sprite();
-				gameSprite.x = 30;
-				gameSprite.y = 0;
 				for(var row:int=0; row<_levelRows.length; row++)
 				{
 					for(var col:int=0; col<_levelRows[row].length; col++)
 					{
 						hasItem = _levelRows[row][col];
-						addItem(col,row,hasItem);
+						var tmpItem:Item = addItem(col,row,hasItem);
+						this.addChild(tmpItem);
+						
 					}
 				}
 				if (lookForMatches().length != 0) continue;
@@ -184,20 +183,30 @@ package levels
 				break;
 				startNum++;
 			}
-			this.addChild(gameSprite);
 			
 		}		
 		
 		private function addItem(col:int, row:int, hasItem:String = "1"):Item
 		{
+			trace('function addItem called');
+			
+			var img:Image = new Image(Asset.getAtlas().getTexture("teal_gem"));
+			this.addChild(img);
+			
+			img.x = col * _cellWidth;
+			img.y = row * _cellHeight;
+			
+			trace('imgx = ' + img.x);
+			
 			_item = new Item();
+			this.addChild(_item);
+			
 			_item.x = (col * _cellWidth) + _offsetX;
 			_item.y = (row * _cellHeight) + _offsetY;
 			_item.col = col;
 			_item.row = row;
 			_item.type = Math.ceil(Math.random()*7);
 			
-			this.addChild(_item);
 			grid[col][row] = _item;
 			_item.addEventListener(starling.events.Event.TRIGGERED, onItemTrigger);
 			
@@ -423,6 +432,7 @@ package levels
 		
 		// look to see if a possible move is on the board
 		public function lookForPossibles():Boolean {
+			trace('lookForPossibles was called');
 			for(var col:int=0;col<8;col++) {
 				for(var  row:int=0;row<8;row++) {
 					
